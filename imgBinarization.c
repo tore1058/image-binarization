@@ -21,6 +21,41 @@ typedef struct
     Node *last;
 } SparseMatrix;
 
+SparseMatrix *createSparseMatrix(int rows, u_int2 cols);
+void insertNode(SparseMatrix *matrix, u_int2 row, u_int2 col, u_int2 value);
+void freeSparseMatrix(SparseMatrix *matrix);
+void thresholdLocal(SparseMatrix *matrix, u_int2 threshold);
+void saveAsPgmFile(SparseMatrix *matrix, const char *filename);
+SparseMatrix *loadImage(const char *filename);
+int findLocalThreshold(SparseMatrix *matrix);
+
+int main()
+{
+
+    char inputFilename[100];
+    const char *outputFilename = "output.pgm";
+    u_int2 threshold;
+
+    printf("Digite o nome do arquivo de entrada (com o formato do arquivo EX: \"moca.pgm\") : ");
+    scanf("%s", inputFilename);
+
+    SparseMatrix *matrix = loadImage(inputFilename);
+    if (matrix == NULL)
+    {
+        return 1;
+    }
+
+    threshold = findLocalThreshold(matrix);
+    thresholdLocal(matrix, threshold);
+    saveAsPgmFile(matrix, outputFilename);
+
+    freeSparseMatrix(matrix);
+
+    printf("Imagem processada com sucesso!\n");
+
+    return 0;
+}
+
 SparseMatrix *createSparseMatrix(int rows, u_int2 cols)
 {
     SparseMatrix *matrix = (SparseMatrix *)malloc(sizeof(SparseMatrix));
@@ -218,31 +253,4 @@ int findLocalThreshold(SparseMatrix *matrix)
 
     printf("Valor do threshold: %d\n", threshold);
     return threshold;
-}
-
-int main()
-{
-
-    char inputFilename[100];
-    const char *outputFilename = "output.pgm";
-    u_int2 threshold;
-
-    printf("Digite o nome do arquivo de entrada (com o formato do arquivo EX: \"moca.pgm\") : ");
-    scanf("%s", inputFilename);
-
-    SparseMatrix *matrix = loadImage(inputFilename);
-    if (matrix == NULL)
-    {
-        return 1;
-    }
-
-    threshold = findLocalThreshold(matrix);
-    thresholdLocal(matrix, threshold);
-    saveAsPgmFile(matrix, outputFilename);
-
-    freeSparseMatrix(matrix);
-
-    printf("Imagem processada com sucesso!\n");
-
-    return 0;
 }
