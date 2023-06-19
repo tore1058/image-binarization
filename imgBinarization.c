@@ -1,3 +1,4 @@
+//aluno: Arthur Souza Santos Romão a2257793
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -232,6 +233,8 @@ int findLocalThreshold(SparseMatrix *matrix)
     if (maxPeak1Index == 0 || maxPeak2Index == 0)
     {
         printf("Imagem binária.\nValor do threshold: 255\n");
+        printf("\nHistograma: ");
+        for(int i = 0; i < 255;i++) printf("%d ",histogram[i]);
         return 255;
     }
 
@@ -252,5 +255,7 @@ int findLocalThreshold(SparseMatrix *matrix)
     threshold = threshold / counter;
 
     printf("Valor do threshold: %d\n", threshold);
+    printf("\nHistograma: ");
+        for(int i = 0; i < 255;i++) printf("%d ",histogram[i]);
     return threshold;
 }
